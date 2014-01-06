@@ -1,0 +1,10 @@
+[Activity]
+name = Qr Reader
+bundle_id = org.sugarlabs.qrreader
+exec = sugar-activity activity.QrReader
+icon = qrreader
+activity_version = 1 
+show_launcher = yes
+single_instance = yes
+license = GPLv2+
+summary = QR Reader
