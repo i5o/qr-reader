@@ -1,7 +1,7 @@
 [Activity]
 name = Qr Reader
 bundle_id = org.sugarlabs.qrreader
-exec = sugar-activity activity.QrReader
+exec = qrReader.sh
 icon = qrreader
 activity_version = 1 
 show_launcher = yes

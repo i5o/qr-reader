@@ -55,7 +55,6 @@ else:
 
 LIB = os.path.join(DATA, "lib")
 sys.path.append(DATA)
-os.environ["LD_LIBRARY_PATH"] = LIB
 from qrtools import QR
 
 GObject.threads_init()
