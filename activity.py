@@ -19,7 +19,6 @@
 import commands
 import gi
 import os
-import random
 import sys
 
 gi.require_version('Gst', "1.0")
@@ -41,7 +40,6 @@ from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toggletoolbutton import ToggleToolButton as ToogleButton
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
-from sugar3.graphics.toolcombobox import ToolComboBox
 
 
 DATA = os.path.join(activity.get_bundle_path(), "tools")
@@ -51,7 +49,7 @@ if 'arm' in data:
 elif '64' in data:
     DATA = os.path.join(DATA, "64")
 else:
-    DATA = Os.path.join(DATA, "32")
+    DATA = os.path.join(DATA, "32")
 
 LIB = os.path.join(DATA, "lib")
 sys.path.append(DATA)
@@ -95,7 +93,7 @@ class QrReader(activity.Activity):
         self.stop_play.set_tooltip(_("Turn on/off the camera"))
         self.stop_play.props.active = True
 
-        self.copylink = copy_to = ToolButton('text-uri-list')
+        self.copylink = ToolButton('text-uri-list')
         self.copylink.set_tooltip(_("Copy link to clipboard"))
         self.copylink.set_sensitive(False)
 
@@ -115,7 +113,8 @@ class QrReader(activity.Activity):
 
     def setup_init(self):
         xid = self.qr_window.get_property('window').get_xid()
-        visor = QrVisor(xid, self.stop_play, self, self.qr_window, self.copylink, self.image)
+        visor = QrVisor(xid, self.stop_play, self, self.qr_window,
+                self.copylink, self.image)
         visor.play()
 
 
@@ -133,7 +132,7 @@ class QrVisor:
 
         self.camerabin = Gst.ElementFactory.make("camerabin", "cam")
         self.sink = Gst.ElementFactory.make("xvimagesink", "sink")
-        src = Gst.ElementFactory.make("v4l2src","src")
+        src = Gst.ElementFactory.make("v4l2src", "src")
         self.camerabin.set_property("viewfinder-sink", self.sink)
 
         wrapper = Gst.ElementFactory.make("wrappercamerabinsrc", "wrapper")
@@ -167,15 +166,18 @@ class QrVisor:
             if hasattr(widget, "set_named_icon"):
                 widget.set_named_icon("media-playback-start")
             self.image.hide()
+
             def internalcallback():
                 self.draw_area.show()
                 self.activity.show()
+
             GObject.timeout_add(100, internalcallback)
         else:
             if hasattr(widget, "set_named_icon"):
                 widget.set_named_icon("media-playback-pause")
             widget.set_icon_name("media-playback-pause")
             image = self.get_qr()
+
             def internal_callback():
                 while 1:
                     if not os.path.exists(image):
@@ -219,16 +221,20 @@ class QrVisor:
             self.copy_link.set_sensitive(True)
             alert = NotifyAlert(10)
             alert.props.title = _("Code found")
-            alert.props.msg = _("Click on toolbar button for copy link to clipboard.")
-            alert.connect("response", lambda x, y: self.activity.remove_alert(x))
+            alert.props.msg = _("Click on toolbar button for "
+                "copy link to clipboard.")
+            alert.connect("response", lambda x,
+                y: self.activity.remove_alert(x))
             self.activity.add_alert(alert)
         else:
             self.qr_link = None
             self.copy_link.set_sensitive(False)
             alert = NotifyAlert(10)
             alert.props.title = _("Code not found")
-            alert.props.msg = _("Try again, please focus the Qr Code in the camera.")
-            alert.connect("response", lambda x, y: self.activity.remove_alert(x))
+            alert.props.msg = _("Try again, please focus the Qr "
+                "Code in the camera.")
+            alert.connect("response", lambda x,
+                y: self.activity.remove_alert(x))
             self.activity.add_alert(alert)
 
         self.stop_play.set_sensitive(False)
