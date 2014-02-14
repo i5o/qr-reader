@@ -9,5 +9,5 @@ When you have a Qr Code, you can copy it pressing the "Copy link to clipboard" b
 Sugar Labs Qr Code
 ========
 You can use the Sugar Labs Qr Code<br>
-<img src="https://raw.github.com/ignaciouy/qr-reader/master/SugarLabsQr.svg">
+<img src="https://raw.github.com/ignaciouy/qr-reader/master/SugarLabsQr.png">
 
